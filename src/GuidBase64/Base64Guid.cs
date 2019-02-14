@@ -12,6 +12,8 @@ namespace GuidBase64
 
         public Base64Guid(byte[] buffer) => Guid = new Guid(buffer);
 
+        public Base64Guid(string encoded) => Guid = new Guid(ParseToByteArray(encoded));
+
         public override string ToString()
         {
             string enc = Convert.ToBase64String(Guid.ToByteArray());
@@ -23,8 +25,15 @@ namespace GuidBase64
 
         public static Base64Guid NewBase64Guid() => new Base64Guid(Guid.NewGuid());
 
-        public static Base64Guid FromBase64String(string encoded)
+        public static Base64Guid FromBase64String(string encoded) => new Base64Guid(encoded);
+
+        private static byte[] ParseToByteArray(string encoded)
         {
+            if (encoded is null)
+            {
+                throw new ArgumentNullException(nameof(encoded));
+            }
+
             if (encoded.Length < 22 || encoded.Length > 22)
             {
                 throw new ArgumentException("String length does not meet encoded GUID requirement (22 characters)");
@@ -33,8 +42,7 @@ namespace GuidBase64
             encoded = encoded.Replace("_", "/");
             encoded = encoded.Replace("-", "+");
 
-            byte[] buffer = Convert.FromBase64String(encoded + "==");
-            return new Base64Guid(buffer);
+            return Convert.FromBase64String(encoded + "==");
         }
     }
 }
