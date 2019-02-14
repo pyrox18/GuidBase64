@@ -14,6 +14,11 @@ namespace GuidBase64
 
         public Base64Guid(string encoded) => Guid = new Guid(ParseToByteArray(encoded));
 
+        public byte[] ToByteArray()
+        {
+            return Guid.ToByteArray();
+        }
+
         public override string ToString()
         {
             string enc = Convert.ToBase64String(Guid.ToByteArray());

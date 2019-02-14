@@ -46,6 +46,21 @@ namespace GuidBase64.UnitTests
             }
         }
 
+        public class ToByteArrayMethod
+        {
+            public static IEnumerable<object[]> ReturnsByteArrayData => Base64GuidPairData;
+
+            [Theory]
+            [MemberData(nameof(ReturnsByteArrayData))]
+            public void ReturnsByteArray(Guid guid, string encoded)
+            {
+                var base64Guid = new Base64Guid(encoded);
+
+                var result = base64Guid.ToByteArray();
+                Assert.Equal(guid.ToByteArray(), result);
+            }
+        }
+
         public class ParseStaticMethod
         {
             public static IEnumerable<object[]> ReturnsBase64GuidData => Base64GuidPairData;
