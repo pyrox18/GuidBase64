@@ -66,5 +66,31 @@ namespace GuidBase64.UnitTests
                 Assert.True(result);
             }
         }
+
+        public class EqualsMethod
+        {
+            [Fact]
+            public void ReturnsTrue()
+            {
+                var a = Base64Guid.NewBase64Guid();
+                object o = a;
+
+                var result = a.Equals(o);
+
+                Assert.True(result);
+            }
+
+            [Fact]
+            public void ReturnsFalse()
+            {
+                var a = Base64Guid.NewBase64Guid();
+                object o = a;
+                var b = new Base64Guid();
+
+                var result = b.Equals(o);
+
+                Assert.False(result);
+            }
+        }
     }
 }

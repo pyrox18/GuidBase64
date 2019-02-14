@@ -22,6 +22,21 @@ namespace GuidBase64
             return enc.Substring(0, 22);
         }
 
+        public override bool Equals(object obj)
+        {
+            Base64Guid b;
+            if (obj is null || !(obj is Base64Guid))
+            {
+                return false;
+            }
+            else
+            {
+                b = (Base64Guid)obj;
+            }
+
+            return Guid == b.Guid;
+        }
+
         public static Base64Guid NewBase64Guid() => new Base64Guid(Guid.NewGuid());
 
         public static Base64Guid Parse(string encoded) => new Base64Guid(encoded);
