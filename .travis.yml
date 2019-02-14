@@ -1,0 +1,17 @@
+language: csharp
+mono: none
+os: linux
+dist: xenial
+dotnet: 2.2.103
+script:
+  - dotnet restore GuidBase64.sln
+  - dotnet build src/GuidBase64/GuidBase64.csproj -c Release
+  - dotnet test tests/GuidBase64.UnitTests/GuidBase64.UnitTests.csproj
+  - dotnet pack src/GuidBase64/GuidBase64.csproj -c Release
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: dotnet nuget push src/GuidBase64/bin/Release/GuidBase64.*.nupkg --api-key $NUGET_API_KEY
+  on:
+    tags: true
+    condition: $TRAVIS_TAG =~ ^(\d+\.)?(\d+\.)?(\*|\d+)$
