@@ -4,17 +4,17 @@ namespace GuidBase64
 {
     public class Base64Guid
     {
-        private Guid _guid;
+        public Guid Guid { get; }
 
-        public Base64Guid() => _guid = new Guid();
+        public Base64Guid() => Guid = new Guid();
 
-        public Base64Guid(Guid guid) => _guid = guid;
+        public Base64Guid(Guid guid) => Guid = guid;
 
-        public Base64Guid(byte[] buffer) => _guid = new Guid(buffer);
+        public Base64Guid(byte[] buffer) => Guid = new Guid(buffer);
 
         public override string ToString()
         {
-            string enc = Convert.ToBase64String(_guid.ToByteArray());
+            string enc = Convert.ToBase64String(Guid.ToByteArray());
             enc = enc.Replace("/", "_");
             enc = enc.Replace("+", "-");
 
