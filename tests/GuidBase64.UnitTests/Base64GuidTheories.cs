@@ -15,6 +15,21 @@ namespace GuidBase64.UnitTests
                 new object[] { new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), "_____________________w" }
             };
 
+        public static IEnumerable<object[]> InvalidStringLengthData =>
+            new List<object[]>
+            {
+                new object[] { "123456789012345678901" },
+                new object[] { "12345678901234567890123" }
+            };
+
+        public static IEnumerable<object[]> InvalidStringContentData =>
+            new List<object[]>
+            {
+                new object[] { "abcdefghijABCDEFGHIJ1=" },
+                new object[] { ":bcdefghijABCDEFGHIJ1=" },
+                new object[] { ":bcdefghijABCDEFGHIJ12" }
+            };
+
         public class ToStringMethod
         {
             public static IEnumerable<object[]> ReturnsBase64StringData => Base64GuidPairData;
@@ -34,6 +49,8 @@ namespace GuidBase64.UnitTests
         public class ParseStaticMethod
         {
             public static IEnumerable<object[]> ReturnsBase64GuidData => Base64GuidPairData;
+            public static IEnumerable<object[]> ThrowsWhenStringLengthIsInvalidData => InvalidStringLengthData;
+            public static IEnumerable<object[]> ThrowsWhenStringContentIsInvalidData => InvalidStringContentData;
 
             [Theory]
             [MemberData(nameof(ReturnsBase64GuidData))]
@@ -45,20 +62,54 @@ namespace GuidBase64.UnitTests
             }
 
             [Theory]
-            [InlineData("123456789012345678901")]
-            [InlineData("12345678901234567890123")]
+            [MemberData(nameof(ThrowsWhenStringLengthIsInvalidData))]
             public void ThrowsWhenStringLengthIsInvalid(string input)
             {
                 Assert.Throws<FormatException>(() => Base64Guid.Parse(input));
             }
 
             [Theory]
-            [InlineData("abcdefghijABCDEFGHIJ1=")]
-            [InlineData(":bcdefghijABCDEFGHIJ1=")]
-            [InlineData(":bcdefghijABCDEFGHIJ12")]
+            [MemberData(nameof(ThrowsWhenStringContentIsInvalidData))]
             public void ThrowsWhenStringContentIsInvalid(string input)
             { 
                 Assert.Throws<FormatException>(() => Base64Guid.Parse(input));
+            }
+        }
+
+        public class TryParseStaticMethod
+        {
+            public static IEnumerable<object[]> ReturnsTrueWithBase64GuidResultData => Base64GuidPairData;
+            public static IEnumerable<object[]> ReturnsFalseWhenStringLengthIsInvalidData => InvalidStringLengthData;
+            public static IEnumerable<object[]> ReturnsFalseWhenStringContentIsInvalidData => InvalidStringContentData;
+
+            [Theory]
+            [MemberData(nameof(ReturnsTrueWithBase64GuidResultData))]
+            public void ReturnsTrueWithBase64GuidResult(Guid expected, string input)
+            {
+                var result = Base64Guid.TryParse(input, out Base64Guid output);
+
+                Assert.True(result);
+                Assert.Equal(expected, output.Guid);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsFalseWhenStringLengthIsInvalidData))]
+            public void ReturnsFalseWhenStringLengthIsInvalid(string input)
+            {
+                var result = Base64Guid.TryParse(input, out Base64Guid output);
+
+                Assert.False(result);
+                Assert.Equal(default(Base64Guid), output);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsFalseWhenStringContentIsInvalidData))]
+            public void ReturnsFalseWhenStringContentIsInvalid(string input)
+            { 
+                var result = Base64Guid.TryParse(input, out Base64Guid output);
+
+                Assert.False(result);
+                Assert.Equal(default(Base64Guid), output);
             }
         }
     }

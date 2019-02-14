@@ -26,6 +26,20 @@ namespace GuidBase64
 
         public static Base64Guid Parse(string encoded) => new Base64Guid(encoded);
 
+        public static bool TryParse(string encoded, out Base64Guid result)
+        {
+            try
+            {
+                result = new Base64Guid(encoded);
+                return true;
+            }
+            catch
+            {
+                result = default;
+                return false;
+            }
+        }
+
         private static byte[] ParseToByteArray(string encoded)
         {
             if (encoded is null)
