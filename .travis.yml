@@ -1,0 +1,9 @@
+language: csharp
+mono: none
+os: linux
+dist: xenial
+dotnet: 2.2.103
+script:
+  - dotnet restore GuidBase64.sln
+  - dotnet build src/GuidBase64/GuidBase64.csproj -c Release
+  - dotnet test tests/GuidBase64.UnitTests/GuidBase64.UnitTests.csproj
