@@ -15,6 +15,19 @@ namespace GuidBase64.UnitTests
             }
         }
 
+        public class GetHashCodeMethod
+        {
+            [Fact]
+            public void ReturnsEqualHashCodes()
+            {
+                var guid = Guid.NewGuid();
+                var a = new Base64Guid(guid);
+                var b = new Base64Guid(guid);
+
+                Assert.Equal(a.GetHashCode(), b.GetHashCode());
+            }
+        }
+
         public class EqualsOperator
         {
             [Fact]

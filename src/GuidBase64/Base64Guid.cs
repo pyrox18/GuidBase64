@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GuidBase64
 {
-    public class Base64Guid
+    public class Base64Guid : IEquatable<Base64Guid>
     {
         public Guid Guid { get; }
 
@@ -86,6 +87,17 @@ namespace GuidBase64
             encoded = encoded.Replace("-", "+");
 
             return Convert.FromBase64String(encoded + "==");
+        }
+
+        public bool Equals(Base64Guid other)
+        {
+            return other != null &&
+                   Guid.Equals(other.Guid);
+        }
+
+        public override int GetHashCode()
+        {
+            return -737073652 + EqualityComparer<Guid>.Default.GetHashCode(Guid);
         }
     }
 }
