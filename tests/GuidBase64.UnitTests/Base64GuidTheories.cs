@@ -49,7 +49,7 @@ namespace GuidBase64.UnitTests
             [InlineData("12345678901234567890123")]
             public void ThrowsWhenStringLengthIsInvalid(string input)
             {
-                Assert.Throws<ArgumentException>(() => Base64Guid.FromBase64String(input));
+                Assert.Throws<FormatException>(() => Base64Guid.FromBase64String(input));
             }
 
             [Theory]

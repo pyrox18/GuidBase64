@@ -36,7 +36,7 @@ namespace GuidBase64
 
             if (encoded.Length < 22 || encoded.Length > 22)
             {
-                throw new ArgumentException("String length does not meet encoded GUID requirement (22 characters)");
+                throw new FormatException("String length does not meet encoded GUID requirement (22 characters)");
             }
 
             encoded = encoded.Replace("_", "/");
