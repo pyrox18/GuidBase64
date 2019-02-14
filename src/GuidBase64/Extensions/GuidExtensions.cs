@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GuidBase64
+namespace GuidBase64.Extensions
 {
     public static class GuidExtensions
     {
