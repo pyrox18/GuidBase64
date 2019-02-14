@@ -31,7 +31,7 @@ namespace GuidBase64.UnitTests
             }
         }
 
-        public class FromBase64StringStaticMethod
+        public class ParseStaticMethod
         {
             public static IEnumerable<object[]> ReturnsBase64GuidData => Base64GuidPairData;
 
@@ -39,7 +39,7 @@ namespace GuidBase64.UnitTests
             [MemberData(nameof(ReturnsBase64GuidData))]
             public void ReturnsBase64Guid(Guid expected, string input)
             {
-                var result = Base64Guid.FromBase64String(input);
+                var result = Base64Guid.Parse(input);
 
                 Assert.Equal(expected, result.Guid);
             }
@@ -49,7 +49,7 @@ namespace GuidBase64.UnitTests
             [InlineData("12345678901234567890123")]
             public void ThrowsWhenStringLengthIsInvalid(string input)
             {
-                Assert.Throws<FormatException>(() => Base64Guid.FromBase64String(input));
+                Assert.Throws<FormatException>(() => Base64Guid.Parse(input));
             }
 
             [Theory]
@@ -58,7 +58,7 @@ namespace GuidBase64.UnitTests
             [InlineData(":bcdefghijABCDEFGHIJ12")]
             public void ThrowsWhenStringContentIsInvalid(string input)
             { 
-                Assert.Throws<FormatException>(() => Base64Guid.FromBase64String(input));
+                Assert.Throws<FormatException>(() => Base64Guid.Parse(input));
             }
         }
     }

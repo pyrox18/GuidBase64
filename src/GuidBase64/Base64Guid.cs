@@ -19,13 +19,12 @@ namespace GuidBase64
             string enc = Convert.ToBase64String(Guid.ToByteArray());
             enc = enc.Replace("/", "_");
             enc = enc.Replace("+", "-");
-
             return enc.Substring(0, 22);
         }
 
         public static Base64Guid NewBase64Guid() => new Base64Guid(Guid.NewGuid());
 
-        public static Base64Guid FromBase64String(string encoded) => new Base64Guid(encoded);
+        public static Base64Guid Parse(string encoded) => new Base64Guid(encoded);
 
         private static byte[] ParseToByteArray(string encoded)
         {
