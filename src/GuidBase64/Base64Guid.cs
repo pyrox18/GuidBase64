@@ -40,6 +40,16 @@ namespace GuidBase64
             }
         }
 
+        public static bool operator ==(Base64Guid a, Base64Guid b)
+        {
+            return a.Guid == b.Guid;
+        }
+
+        public static bool operator !=(Base64Guid a, Base64Guid b)
+        {
+            return a.Guid != b.Guid;
+        }
+
         private static byte[] ParseToByteArray(string encoded)
         {
             if (encoded is null)
