@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GuidBase64.CommonTestData\GuidBase64.CommonTestData.csproj" />
     <ProjectReference Include="..\GuidBase64.TestWebApi\GuidBase64.TestWebApi.csproj" />
   </ItemGroup>
 

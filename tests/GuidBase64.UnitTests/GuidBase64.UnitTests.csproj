@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GuidBase64\GuidBase64.csproj" />
+    <ProjectReference Include="..\GuidBase64.CommonTestData\GuidBase64.CommonTestData.csproj" />
   </ItemGroup>
 
 </Project>
