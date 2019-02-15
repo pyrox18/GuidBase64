@@ -1,8 +1,11 @@
-﻿using System;
+﻿using GuidBase64.Converters;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace GuidBase64
 {
+    [TypeConverter(typeof(Base64GuidTypeConverter))]
     public class Base64Guid : IEquatable<Base64Guid>
     {
         public Guid Guid { get; }
