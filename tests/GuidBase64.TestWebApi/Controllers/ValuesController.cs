@@ -7,7 +7,13 @@ namespace GuidBase64.TestWebApi.Controllers
     public class ValuesController : ControllerBase
     {
         [HttpGet("{id}")]
-        public ActionResult<string> Get(Base64Guid id)
+        public ActionResult<string> GetWithRouteParameter(Base64Guid id)
+        {
+            return id.Guid.ToString();
+        }
+
+        [HttpGet]
+        public ActionResult<string> GetWithQueryParameter(Base64Guid id)
         {
             return id.Guid.ToString();
         }

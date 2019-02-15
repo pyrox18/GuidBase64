@@ -24,7 +24,7 @@ namespace GuidBase64.IntegrationTests
 
         [Theory]
         [MemberData(nameof(CanBindBase64GuidData))]
-        public async Task CanBindBase64Guid(Guid guid, string encodedBase64Guid)
+        public async Task CanBindBase64GuidInRouteParameter(Guid guid, string encodedBase64Guid)
         {
             var httpResponse = await _client.GetAsync($"/api/values/{encodedBase64Guid}");
 
@@ -37,9 +37,31 @@ namespace GuidBase64.IntegrationTests
 
         [Theory]
         [MemberData(nameof(CannotBindBase64GuidData))]
-        public async Task CannotBindBase64Guid(string invalidBase64Guid)
+        public async Task CannotBindBase64GuidInRouteParameter(string invalidBase64Guid)
         {
             var httpResponse = await _client.GetAsync($"/api/values/{invalidBase64Guid}");
+
+            Assert.Equal(HttpStatusCode.BadRequest, httpResponse.StatusCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(CanBindBase64GuidData))]
+        public async Task CanBindBase64GuidInQueryParameter(Guid guid, string encodedBase64Guid)
+        {
+            var httpResponse = await _client.GetAsync($"/api/values?id={encodedBase64Guid}");
+
+            httpResponse.EnsureSuccessStatusCode();
+
+            var stringResponse = await httpResponse.Content.ReadAsStringAsync();
+            var resultGuid = new Guid(stringResponse);
+            Assert.Equal(guid, resultGuid);
+        }
+
+        [Theory]
+        [MemberData(nameof(CannotBindBase64GuidData))]
+        public async Task CannotBindBase64GuidInQueryParameter(string invalidBase64Guid)
+        {
+            var httpResponse = await _client.GetAsync($"/api/values?id={invalidBase64Guid}");
 
             Assert.Equal(HttpStatusCode.BadRequest, httpResponse.StatusCode);
         }
