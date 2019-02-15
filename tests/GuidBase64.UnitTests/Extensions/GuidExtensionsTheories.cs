@@ -3,7 +3,7 @@ using Xunit;
 using GuidBase64.Extensions;
 using System.Collections.Generic;
 
-namespace GuidBase64.UnitTests
+namespace GuidBase64.UnitTests.Extensions
 {
     public class GuidExtensionsTheories
     {
