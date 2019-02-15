@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using GuidBase64.Extensions;
+using GuidBase64;
 using System.Collections.Generic;
 
 namespace GuidBase64.UnitTests
