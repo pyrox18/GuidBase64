@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GuidBase64.CommonTestData
 {
@@ -27,5 +28,8 @@ namespace GuidBase64.CommonTestData
                 new object[] { ":bcdefghijABCDEFGHIJ1=" },
                 new object[] { ":bcdefghijABCDEFGHIJ12" }
             };
+
+        public static IEnumerable<object[]> InvalidBase64GuidStrings =>
+            InvalidContentBase64GuidStrings.Concat(InvalidLengthBase64GuidStrings);
     }
 }
