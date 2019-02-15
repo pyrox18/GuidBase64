@@ -24,9 +24,9 @@ namespace GuidBase64.CommonTestData
         public static IEnumerable<object[]> InvalidContentBase64GuidStrings =>
             new List<object[]>
             {
-                new object[] { "abcdefghijABCDEFGHIJ1=" },
-                new object[] { ":bcdefghijABCDEFGHIJ1=" },
-                new object[] { ":bcdefghijABCDEFGHIJ12" }
+                new object[] { "abcdefghijABCDEFGHIJ1/" },
+                new object[] { "+bcdefghijABCDEFGHIJ1/" },
+                new object[] { "+bcdefghijABCDEFGHIJ12" }
             };
 
         public static IEnumerable<object[]> InvalidBase64GuidStrings =>

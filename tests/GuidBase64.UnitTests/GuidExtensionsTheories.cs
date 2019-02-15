@@ -30,10 +30,60 @@ namespace GuidBase64.UnitTests
             }
 
             [Theory]
+            [MemberData(nameof(ReturnsBase64GuidData))]
+            public void ReturnsBase64GuidWithOptions(Guid guid, string _)
+            {
+                var result = guid.ToBase64Guid(options =>
+                {
+                    options.UseStandardBase64Encoding();
+                    options.UsePadding();
+                });
+
+                Assert.Equal(guid, result.Guid);
+            }
+
+            [Theory]
             [MemberData(nameof(ReturnsBase64StringData))]
             public void ReturnsBase64String(Guid guid, string expected)
             {
                 var result = guid.ToBase64String();
+
+                Assert.Equal(expected, result);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64StringData))]
+            public void ReturnsUrlUnsafeBase64String(Guid guid, string expected)
+            {
+                expected = expected.Replace("-", "+").Replace("_", "/");
+
+                var result = guid.ToBase64String(options => options.UseStandardBase64Encoding());
+
+                Assert.Equal(expected, result);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64StringData))]
+            public void ReturnsBase64StringWithPadding(Guid guid, string expected)
+            {
+                expected += "==";
+
+                var result = guid.ToBase64String(options => options.UsePadding());
+
+                Assert.Equal(expected, result);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64StringData))]
+            public void ReturnsUrlUnsafeBase64StringWithPadding(Guid guid, string expected)
+            {
+                expected = expected.Replace("-", "+").Replace("_", "/") + "==";
+
+                var result = guid.ToBase64String(options =>
+                {
+                    options.UseStandardBase64Encoding();
+                    options.UsePadding();
+                });
 
                 Assert.Equal(expected, result);
             }
