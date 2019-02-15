@@ -22,6 +22,48 @@ namespace GuidBase64.UnitTests
 
                 Assert.Equal(expected, result);
             }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64StringData))]
+            public void ReturnsUrlUnsafeBase64String(Guid input, string expected)
+            {
+                expected = expected.Replace("-", "+").Replace("_", "/");
+
+                var base64Guid = new Base64Guid(input, options => options.UseStandardBase64Encoding());
+
+                var result = base64Guid.ToString();
+
+                Assert.Equal(expected, result);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64StringData))]
+            public void ReturnsBase64StringWithPadding(Guid input, string expected)
+            {
+                expected += "==";
+                var base64Guid = new Base64Guid(input, options => options.UsePadding());
+
+                var result = base64Guid.ToString();
+
+                Assert.Equal(expected, result);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64StringData))]
+            public void ReturnsUrlUnsafeBase64StringWithPadding(Guid input, string expected)
+            {
+                expected = expected.Replace("-", "+").Replace("_", "/") + "==";
+
+                var base64Guid = new Base64Guid(input, options =>
+                {
+                    options.UseStandardBase64Encoding();
+                    options.UsePadding();
+                });
+
+                var result = base64Guid.ToString();
+
+                Assert.Equal(expected, result);
+            }
         }
 
         public class ToByteArrayMethod
@@ -55,6 +97,43 @@ namespace GuidBase64.UnitTests
             }
 
             [Theory]
+            [MemberData(nameof(ReturnsBase64GuidData))]
+            public void ReturnsBase64GuidFromUrlUnsafeInput(Guid expected, string input)
+            {
+                input = input.Replace("-", "+").Replace("_", "/");
+
+                var result = Base64Guid.Parse(input, options => options.UseStandardBase64Encoding());
+
+                Assert.Equal(expected, result.Guid);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64GuidData))]
+            public void ReturnsBase64GuidFromInputWithPadding(Guid expected, string input)
+            {
+                input += "==";
+
+                var result = Base64Guid.Parse(input, options => options.UsePadding());
+
+                Assert.Equal(expected, result.Guid);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsBase64GuidData))]
+            public void ReturnsBase64GuidFromUrlUnsafeInputWithPadding(Guid expected, string input)
+            {
+                input = input.Replace("-", "+").Replace("_", "/") + "==";
+
+                var result = Base64Guid.Parse(input, options =>
+                {
+                    options.UseStandardBase64Encoding();
+                    options.UsePadding();
+                });
+
+                Assert.Equal(expected, result.Guid);
+            }
+
+            [Theory]
             [MemberData(nameof(ThrowsWhenStringLengthIsInvalidData))]
             public void ThrowsWhenStringLengthIsInvalid(string input)
             {
@@ -62,10 +141,26 @@ namespace GuidBase64.UnitTests
             }
 
             [Theory]
+            [MemberData(nameof(ThrowsWhenStringLengthIsInvalidData))]
+            public void ThrowsWhenStringLengthIsInvalidForInputWithPadding(string input)
+            {
+                input += "==";
+                Assert.Throws<FormatException>(() => Base64Guid.Parse(input, options => options.UsePadding()));
+            }
+
+            [Theory]
             [MemberData(nameof(ThrowsWhenStringContentIsInvalidData))]
             public void ThrowsWhenStringContentIsInvalid(string input)
             { 
                 Assert.Throws<FormatException>(() => Base64Guid.Parse(input));
+            }
+
+            [Theory]
+            [MemberData(nameof(ThrowsWhenStringContentIsInvalidData))]
+            public void ThrowsWhenStringContentIsInvalidForUrlUnsafeInput(string input)
+            {
+                input = input.Replace("+", "-").Replace("/", "_");
+                Assert.Throws<FormatException>(() => Base64Guid.Parse(input, options => options.UseStandardBase64Encoding()));
             }
         }
 
@@ -86,6 +181,43 @@ namespace GuidBase64.UnitTests
             }
 
             [Theory]
+            [MemberData(nameof(ReturnsTrueWithBase64GuidResultData))]
+            public void ReturnsTrueWithBase64GuidResultFromUrlUnsafeInput(Guid expected, string input)
+            {
+                input = input.Replace("-", "+").Replace("_", "/");
+
+                var result = Base64Guid.TryParse(input, options => options.UseStandardBase64Encoding(), out Base64Guid output);
+
+                Assert.Equal(expected, output.Guid);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsTrueWithBase64GuidResultData))]
+            public void ReturnsTrueWithBase64GuidResultFromInputWithPadding(Guid expected, string input)
+            {
+                input += "==";
+
+                var result = Base64Guid.TryParse(input, options => options.UsePadding(), out Base64Guid output);
+
+                Assert.Equal(expected, output.Guid);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsTrueWithBase64GuidResultData))]
+            public void ReturnsTrueWithBase64GuidResultFromUrlUnsafeInputWithPadding(Guid expected, string input)
+            {
+                input = input.Replace("-", "+").Replace("_", "/") + "==";
+
+                var result = Base64Guid.TryParse(input, options =>
+                {
+                    options.UseStandardBase64Encoding();
+                    options.UsePadding();
+                }, out Base64Guid output);
+
+                Assert.Equal(expected, output.Guid);
+            }
+
+            [Theory]
             [MemberData(nameof(ReturnsFalseWhenStringLengthIsInvalidData))]
             public void ReturnsFalseWhenStringLengthIsInvalid(string input)
             {
@@ -96,10 +228,34 @@ namespace GuidBase64.UnitTests
             }
 
             [Theory]
+            [MemberData(nameof(ReturnsFalseWhenStringLengthIsInvalidData))]
+            public void ReturnsFalseWhenStringLengthIsInvalidForInputWithPadding(string input)
+            {
+                input += "==";
+
+                var result = Base64Guid.TryParse(input, options => options.UsePadding(), out Base64Guid output);
+
+                Assert.False(result);
+                Assert.Equal(default(Base64Guid), output);
+            }
+
+            [Theory]
             [MemberData(nameof(ReturnsFalseWhenStringContentIsInvalidData))]
             public void ReturnsFalseWhenStringContentIsInvalid(string input)
             { 
                 var result = Base64Guid.TryParse(input, out Base64Guid output);
+
+                Assert.False(result);
+                Assert.Equal(default(Base64Guid), output);
+            }
+
+            [Theory]
+            [MemberData(nameof(ReturnsFalseWhenStringContentIsInvalidData))]
+            public void ReturnsFalseWhenStringContentIsInvalidForUrlUnsafeInput(string input)
+            {
+                input = input.Replace("+", "-").Replace("/", "_");
+
+                var result = Base64Guid.TryParse(input, options => options.UseStandardBase64Encoding(), out Base64Guid output);
 
                 Assert.False(result);
                 Assert.Equal(default(Base64Guid), output);
