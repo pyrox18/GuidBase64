@@ -90,13 +90,13 @@ The `Base64Guid` class has its own implementation of `TypeConverter`, which mean
 [HttpGet("{id}")]
 public IActionResult Get(Base64Guid id) // route parameter
 {
-	// controller logic
+    // controller logic
 }
 
 [HttpGet("values")]
 public IActionResult Get(Base64Guid id) // query parameter
 {
-	// controller logic
+    // controller logic
 }
 ```
 
@@ -111,8 +111,8 @@ string b = Guid.NewGuid().ToBase64String(options => options.UsePadding());
 
 bool isParseSuccess = Base64Guid.TryParse(b, options =>
 {
-	options.UseStandardBase64Encoding();
-	options.UsePadding();
+    options.UseStandardBase64Encoding();
+    options.UsePadding();
 }, out Base64Guid result);
 ```
 
