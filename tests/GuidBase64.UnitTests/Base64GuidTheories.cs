@@ -2,37 +2,15 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using GuidBase64;
+using GuidBase64.CommonTestData;
 
 namespace GuidBase64.UnitTests
 {
     public class Base64GuidTheories
     {
-        public static IEnumerable<object[]> Base64GuidPairData =>
-            new List<object[]>
-            {
-                new object[] { new Guid("00000000-0000-0000-0000-000000000000"), "AAAAAAAAAAAAAAAAAAAAAA" },
-                new object[] { new Guid("c6a44c9f-763a-4524-8c0b-04c599f001a6"), "n0ykxjp2JEWMCwTFmfABpg" },
-                new object[] { new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), "_____________________w" }
-            };
-
-        public static IEnumerable<object[]> InvalidStringLengthData =>
-            new List<object[]>
-            {
-                new object[] { "123456789012345678901" },
-                new object[] { "12345678901234567890123" }
-            };
-
-        public static IEnumerable<object[]> InvalidStringContentData =>
-            new List<object[]>
-            {
-                new object[] { "abcdefghijABCDEFGHIJ1=" },
-                new object[] { ":bcdefghijABCDEFGHIJ1=" },
-                new object[] { ":bcdefghijABCDEFGHIJ12" }
-            };
-
         public class ToStringMethod
         {
-            public static IEnumerable<object[]> ReturnsBase64StringData => Base64GuidPairData;
+            public static IEnumerable<object[]> ReturnsBase64StringData => TestData.Base64GuidPairs;
 
             [Theory]
             [MemberData(nameof(ReturnsBase64StringData))]
@@ -48,7 +26,7 @@ namespace GuidBase64.UnitTests
 
         public class ToByteArrayMethod
         {
-            public static IEnumerable<object[]> ReturnsByteArrayData => Base64GuidPairData;
+            public static IEnumerable<object[]> ReturnsByteArrayData => TestData.Base64GuidPairs;
 
             [Theory]
             [MemberData(nameof(ReturnsByteArrayData))]
@@ -63,9 +41,9 @@ namespace GuidBase64.UnitTests
 
         public class ParseStaticMethod
         {
-            public static IEnumerable<object[]> ReturnsBase64GuidData => Base64GuidPairData;
-            public static IEnumerable<object[]> ThrowsWhenStringLengthIsInvalidData => InvalidStringLengthData;
-            public static IEnumerable<object[]> ThrowsWhenStringContentIsInvalidData => InvalidStringContentData;
+            public static IEnumerable<object[]> ReturnsBase64GuidData => TestData.Base64GuidPairs;
+            public static IEnumerable<object[]> ThrowsWhenStringLengthIsInvalidData => TestData.InvalidLengthBase64GuidStrings;
+            public static IEnumerable<object[]> ThrowsWhenStringContentIsInvalidData => TestData.InvalidContentBase64GuidStrings;
 
             [Theory]
             [MemberData(nameof(ReturnsBase64GuidData))]
@@ -93,9 +71,9 @@ namespace GuidBase64.UnitTests
 
         public class TryParseStaticMethod
         {
-            public static IEnumerable<object[]> ReturnsTrueWithBase64GuidResultData => Base64GuidPairData;
-            public static IEnumerable<object[]> ReturnsFalseWhenStringLengthIsInvalidData => InvalidStringLengthData;
-            public static IEnumerable<object[]> ReturnsFalseWhenStringContentIsInvalidData => InvalidStringContentData;
+            public static IEnumerable<object[]> ReturnsTrueWithBase64GuidResultData => TestData.Base64GuidPairs;
+            public static IEnumerable<object[]> ReturnsFalseWhenStringLengthIsInvalidData => TestData.InvalidLengthBase64GuidStrings;
+            public static IEnumerable<object[]> ReturnsFalseWhenStringContentIsInvalidData => TestData.InvalidContentBase64GuidStrings;
 
             [Theory]
             [MemberData(nameof(ReturnsTrueWithBase64GuidResultData))]
