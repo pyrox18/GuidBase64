@@ -73,13 +73,13 @@ The following constructors can be used to create your own `Base64Guid`.
 Base64Guid a = new Base64Guid(); // synonymous with new Guid()
 
 byte[] buffer = // get buffer from somewhere
-Base64Guid b = new Base64Guid(buffer) // synonymous with new Guid(byte[])
+Base64Guid b = new Base64Guid(buffer); // synonymous with new Guid(byte[])
 
 Guid guid = Guid.NewGuid();
-Base64Guid c = new Base64Guid(guid) // alternative to create from existing GUID
+Base64Guid c = new Base64Guid(guid); // alternative to create from existing GUID
 
 string encoded = "AAAAAAAAAAAAAAAAAAAAAA";
-Base64Guid d = new Base64Guid(encoded) // synonymous with new Guid(string), but for base64
+Base64Guid d = new Base64Guid(encoded); // synonymous with new Guid(string), but for base64
 ```
 
 ### ASP.NET Core Model Binding
