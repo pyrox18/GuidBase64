@@ -141,6 +141,10 @@ Available options:
 - `UseStandardBase64Encoding()`: Configures the `Base64Guid` object to use the standard base 64 character set with the `+` and `/` characters instead of `-` and `_`, as specified in [RFC 4648 Section 4](https://tools.ietf.org/html/rfc4648#section-4). This format is not URL- and filename-safe.
 - `UsePadding()`: Configures the `Base64Guid` object to retain the padding characters present at the end of the base 64 string representation (which is always two `=` characters, i.e. `==`). This may cause issues if used with URLs.
 
+## Contributing
+
+Refer to the CONTRIBUTING.md file for more information on how to contribute to this project.
+
 ## License
 
 This library is licensed under the MIT license.
