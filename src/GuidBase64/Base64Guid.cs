@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace GuidBase64
 {
     [TypeConverter(typeof(Base64GuidTypeConverter))]
-    public struct Base64Guid : IEquatable<Base64Guid>
+    public struct Base64Guid
     {
         private readonly Base64GuidOptions _options;
 
@@ -360,27 +360,15 @@ namespace GuidBase64
         }
 
         /// <summary>
-        /// Returns a value indicating whether this instance and a specified <see cref="Base64Guid"/>
-        /// represent the same value.
-        /// </summary>
-        /// <param name="other">An object to compare to this instance.</param>
-        /// <returns>
-        /// true if <paramref name="other"/> is a <see cref="Base64Guid"/> that has the same value
-        /// as this instance; otherwise false.
-        /// </returns>
-        public bool Equals(Base64Guid other)
-        {
-            return other != null &&
-                   Guid.Equals(other.Guid);
-        }
-
-        /// <summary>
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>The hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            return -737073652 + EqualityComparer<Guid>.Default.GetHashCode(Guid);
+            var hashCode = -1906274164;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Base64GuidOptions>.Default.GetHashCode(_options);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(Guid);
+            return hashCode;
         }
     }
 }
