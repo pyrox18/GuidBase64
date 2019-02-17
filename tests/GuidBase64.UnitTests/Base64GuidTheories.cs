@@ -261,5 +261,54 @@ namespace GuidBase64.UnitTests
                 Assert.Equal(default(Base64Guid), output);
             }
         }
+
+        public class StringImplicitOperator
+        {
+            [Theory]
+            [MemberData(nameof(TestData.Base64GuidPairs), MemberType = typeof(TestData))]
+            public void ReturnsBase64GuidAsString(Guid guid, string base64String)
+            {
+                var a = new Base64Guid(guid);
+
+                var result = (string)a;
+
+                Assert.Equal(base64String, result);
+            }
+        }
+
+        public class GuidImplicitOperator
+        {
+            [Theory]
+            [MemberData(nameof(TestData.Base64GuidPairs), MemberType = typeof(TestData))]
+            public void ReturnsBase64GuidAsGuid(Guid guid, string base64String)
+            {
+                var a = new Base64Guid(base64String);
+
+                var result = (Guid)a;
+
+                Assert.Equal(guid, result);
+            }
+        }
+
+        public class Base64GuidImplicitOperator
+        {
+            [Theory]
+            [MemberData(nameof(TestData.Base64GuidPairs), MemberType = typeof(TestData))]
+            public void ReturnsBase64GuidFromString(Guid guid, string base64String)
+            {
+                var result = (Base64Guid)base64String;
+
+                Assert.Equal(guid, result.Guid);
+            }
+
+            [Theory]
+            [MemberData(nameof(TestData.Base64GuidPairs), MemberType = typeof(TestData))]
+            public void ReturnsBase64GuidFromGuid(Guid guid, string _)
+            {
+                var result = (Base64Guid)guid;
+
+                Assert.Equal(guid, result.Guid);
+            }
+        }
     }
 }

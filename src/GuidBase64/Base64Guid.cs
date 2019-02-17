@@ -268,6 +268,42 @@ namespace GuidBase64
             return a.Guid != b.Guid;
         }
 
+        /// <summary>
+        /// Implicitly converts a <see cref="Base64Guid"/> object to its <see cref="string"/> equivalent.
+        /// </summary>
+        /// <param name="a">The <see cref="Base64Guid"/> object to convert.</param>
+        public static implicit operator string(Base64Guid a)
+        {
+            return a.ToString();
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Base64Guid"/> object to its <see cref="System.Guid"/> equivalent.
+        /// </summary>
+        /// <param name="a">The <see cref="Base64Guid"/> object to convert.</param>
+        public static implicit operator Guid(Base64Guid a)
+        {
+            return a.Guid;
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="string"/> object to its <see cref="Base64Guid"/> equivalent.
+        /// </summary>
+        /// <param name="s">The <see cref="string"/> object to convert.</param>
+        public static implicit operator Base64Guid(string s)
+        {
+            return new Base64Guid(s);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="System.Guid"/> object to its <see cref="Base64Guid"/> equivalent.
+        /// </summary>
+        /// <param name="s">The <see cref="System.Guid"/> object to convert.</param>
+        public static implicit operator Base64Guid(Guid g)
+        {
+            return new Base64Guid(g);
+        }
+
         private static byte[] ParseToByteArray(string encoded, Base64GuidOptions options)
         {
             if (encoded is null)
