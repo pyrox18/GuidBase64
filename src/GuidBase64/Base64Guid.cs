@@ -8,21 +8,16 @@ using System.Text.RegularExpressions;
 namespace GuidBase64
 {
     [TypeConverter(typeof(Base64GuidTypeConverter))]
-    public class Base64Guid : IEquatable<Base64Guid>
+    public struct Base64Guid
     {
         private readonly Base64GuidOptions _options;
+
+        public static readonly Base64Guid Empty = new Base64Guid(Guid.Empty);
 
         /// <summary>
         /// Gets the Guid object.
         /// </summary>
         public Guid Guid { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Base64Guid"/> class with an empty Guid
-        /// ("AAAAAAAAAAAAAAAAAAAAAA").
-        /// </summary>
-        public Base64Guid()
-            : this(new Guid(), options => { }) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Base64Guid"/> class with an empty GUID
@@ -98,7 +93,7 @@ namespace GuidBase64
             Guid = new Guid(ParseToByteArray(encoded, _options));
         }
 
-        private Base64GuidOptions BuildOptions(Action<Base64GuidOptionsBuilder> options)
+        private static Base64GuidOptions BuildOptions(Action<Base64GuidOptionsBuilder> options)
         {
             if (options is null)
             {
@@ -133,13 +128,13 @@ namespace GuidBase64
         {
             string enc = Convert.ToBase64String(Guid.ToByteArray());
 
-            if (_options.UrlSafe)
+            if (!_options.StandardBase64Encoding)
             {
                 enc = enc.Replace("/", "_");
                 enc = enc.Replace("+", "-");
             }
 
-            if (_options.StripPadding)
+            if (!_options.Padding)
             {
                 return enc.Substring(0, 22);
             }
@@ -275,6 +270,42 @@ namespace GuidBase64
             return a.Guid != b.Guid;
         }
 
+        /// <summary>
+        /// Implicitly converts a <see cref="Base64Guid"/> object to its <see cref="string"/> equivalent.
+        /// </summary>
+        /// <param name="a">The <see cref="Base64Guid"/> object to convert.</param>
+        public static implicit operator string(Base64Guid a)
+        {
+            return a.ToString();
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Base64Guid"/> object to its <see cref="System.Guid"/> equivalent.
+        /// </summary>
+        /// <param name="a">The <see cref="Base64Guid"/> object to convert.</param>
+        public static implicit operator Guid(Base64Guid a)
+        {
+            return a.Guid;
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="string"/> object to its <see cref="Base64Guid"/> equivalent.
+        /// </summary>
+        /// <param name="s">The <see cref="string"/> object to convert.</param>
+        public static implicit operator Base64Guid(string s)
+        {
+            return new Base64Guid(s);
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="System.Guid"/> object to its <see cref="Base64Guid"/> equivalent.
+        /// </summary>
+        /// <param name="s">The <see cref="System.Guid"/> object to convert.</param>
+        public static implicit operator Base64Guid(Guid g)
+        {
+            return new Base64Guid(g);
+        }
+
         private static byte[] ParseToByteArray(string encoded, Base64GuidOptions options)
         {
             if (encoded is null)
@@ -282,25 +313,25 @@ namespace GuidBase64
                 throw new ArgumentNullException(nameof(encoded));
             }
 
-            if (options.StripPadding && (encoded.Length < 22 || encoded.Length > 22))
+            if (!options.Padding && (encoded.Length < 22 || encoded.Length > 22))
             {
                 throw new FormatException($"{nameof(encoded)} is not 22 characters long");
             }
-            else if (!options.StripPadding && (encoded.Length < 24 || encoded.Length > 24))
+            else if (options.Padding && (encoded.Length < 24 || encoded.Length > 24))
             {
                 throw new FormatException($"{nameof(encoded)} is not 24 characters long");
             }
 
             Regex regex;
-            if (options.UrlSafe && options.StripPadding)
+            if (!options.StandardBase64Encoding && !options.Padding)
             {
                 regex = new Regex(@"^[a-zA-Z0-9-_]*$");
             }
-            else if (!options.UrlSafe && options.StripPadding)
+            else if (options.StandardBase64Encoding && !options.Padding)
             {
                 regex = new Regex(@"^[a-zA-Z0-9\+/]*$");
             }
-            else if (options.UrlSafe && !options.StripPadding)
+            else if (!options.StandardBase64Encoding && options.Padding)
             {
                 regex = new Regex(@"^[a-zA-Z0-9-_]*={0,2}$");
             }
@@ -314,13 +345,13 @@ namespace GuidBase64
                 throw new FormatException($"{nameof(encoded)} is not encoded correctly");
             }
 
-            if (options.UrlSafe)
+            if (!options.StandardBase64Encoding)
             {
                 encoded = encoded.Replace("_", "/");
                 encoded = encoded.Replace("-", "+");
             }
 
-            if (!options.StripPadding)
+            if (options.Padding)
             {
                 return Convert.FromBase64String(encoded);
             }
@@ -329,27 +360,15 @@ namespace GuidBase64
         }
 
         /// <summary>
-        /// Returns a value indicating whether this instance and a specified <see cref="Base64Guid"/>
-        /// represent the same value.
-        /// </summary>
-        /// <param name="other">An object to compare to this instance.</param>
-        /// <returns>
-        /// true if <paramref name="other"/> is a <see cref="Base64Guid"/> that has the same value
-        /// as this instance; otherwise false.
-        /// </returns>
-        public bool Equals(Base64Guid other)
-        {
-            return other != null &&
-                   Guid.Equals(other.Guid);
-        }
-
-        /// <summary>
         /// Returns the hash code for this instance.
         /// </summary>
         /// <returns>The hash code for this instance.</returns>
         public override int GetHashCode()
         {
-            return -737073652 + EqualityComparer<Guid>.Default.GetHashCode(Guid);
+            var hashCode = -1906274164;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Base64GuidOptions>.Default.GetHashCode(_options);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(Guid);
+            return hashCode;
         }
     }
 }

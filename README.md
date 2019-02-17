@@ -67,6 +67,14 @@ Console.WriteLine(a == b); // true
 Console.WriteLine(a != b); // false
 ```
 
+A `Base64Guid` instance can be implicitly converted to a `Guid` or `string` with equivalent values.
+
+```cs
+Base64Guid a = Base64Guid.NewBase64Guid();
+Guid b = a;
+string c = a;
+```
+
 The following constructors can be used to create your own `Base64Guid`.
 
 ```cs

@@ -8,13 +8,13 @@
 
         public Base64GuidOptionsBuilder UseStandardBase64Encoding()
         {
-            _options.UrlSafe = false;
+            _options.StandardBase64Encoding = true;
             return this;
         }
 
         public Base64GuidOptionsBuilder UsePadding()
         {
-            _options.StripPadding = false;
+            _options.Padding = true;
             return this;
         }
 
