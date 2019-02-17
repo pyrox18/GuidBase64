@@ -133,13 +133,13 @@ namespace GuidBase64
         {
             string enc = Convert.ToBase64String(Guid.ToByteArray());
 
-            if (_options.UrlSafe)
+            if (!_options.StandardBase64Encoding)
             {
                 enc = enc.Replace("/", "_");
                 enc = enc.Replace("+", "-");
             }
 
-            if (_options.StripPadding)
+            if (!_options.Padding)
             {
                 return enc.Substring(0, 22);
             }
@@ -282,25 +282,25 @@ namespace GuidBase64
                 throw new ArgumentNullException(nameof(encoded));
             }
 
-            if (options.StripPadding && (encoded.Length < 22 || encoded.Length > 22))
+            if (!options.Padding && (encoded.Length < 22 || encoded.Length > 22))
             {
                 throw new FormatException($"{nameof(encoded)} is not 22 characters long");
             }
-            else if (!options.StripPadding && (encoded.Length < 24 || encoded.Length > 24))
+            else if (options.Padding && (encoded.Length < 24 || encoded.Length > 24))
             {
                 throw new FormatException($"{nameof(encoded)} is not 24 characters long");
             }
 
             Regex regex;
-            if (options.UrlSafe && options.StripPadding)
+            if (!options.StandardBase64Encoding && !options.Padding)
             {
                 regex = new Regex(@"^[a-zA-Z0-9-_]*$");
             }
-            else if (!options.UrlSafe && options.StripPadding)
+            else if (options.StandardBase64Encoding && !options.Padding)
             {
                 regex = new Regex(@"^[a-zA-Z0-9\+/]*$");
             }
-            else if (options.UrlSafe && !options.StripPadding)
+            else if (!options.StandardBase64Encoding && options.Padding)
             {
                 regex = new Regex(@"^[a-zA-Z0-9-_]*={0,2}$");
             }
@@ -314,13 +314,13 @@ namespace GuidBase64
                 throw new FormatException($"{nameof(encoded)} is not encoded correctly");
             }
 
-            if (options.UrlSafe)
+            if (!options.StandardBase64Encoding)
             {
                 encoded = encoded.Replace("_", "/");
                 encoded = encoded.Replace("-", "+");
             }
 
-            if (!options.StripPadding)
+            if (options.Padding)
             {
                 return Convert.FromBase64String(encoded);
             }

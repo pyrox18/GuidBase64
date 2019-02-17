@@ -1,14 +1,26 @@
 ﻿namespace GuidBase64.Configuration
 {
-    internal class Base64GuidOptions
+    internal struct Base64GuidOptions
     {
-        internal bool UrlSafe { get; set; }
-        internal bool StripPadding { get; set; }
+        internal bool _standardBase64Encoding;
+        internal bool _padding;
 
-        internal Base64GuidOptions(bool urlSafe = true, bool stripPadding = true)
+        internal bool StandardBase64Encoding
         {
-            UrlSafe = urlSafe;
-            StripPadding = stripPadding;
+            get { return _standardBase64Encoding;  }
+            set { _standardBase64Encoding = value; }
+        }
+
+        internal bool Padding
+        {
+            get { return _padding; }
+            set { _padding = value; }
+        }
+
+        internal Base64GuidOptions(bool standardBase64Encoding, bool padding)
+        {
+            _standardBase64Encoding = standardBase64Encoding;
+            _padding = padding;
         }
     }
 }
