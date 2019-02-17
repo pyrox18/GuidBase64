@@ -1,6 +1,6 @@
 # GuidBase64
 
-[![Build Status](https://travis-ci.com/pyrox18/GuidBase64.svg?branch=master)](https://travis-ci.com/pyrox18/GuidBase64) ![](https://img.shields.io/nuget/v/GuidBase64.svg?style=flat)
+[![Build Status](https://travis-ci.com/pyrox18/GuidBase64.svg?branch=master)](https://travis-ci.com/pyrox18/GuidBase64) [![](https://img.shields.io/nuget/v/GuidBase64.svg?style=flat)](https://www.nuget.org/packages/GuidBase64/)
 
 A configurable wrapper for `System.Guid` that enables easy conversion of GUIDs to and from base 64 strings.
 
