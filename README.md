@@ -8,6 +8,16 @@ The base 64 representation uses a URL- and filename-safe character set based on 
 
 This library borrows implementation concepts from [this blog post by Mads Kristensen](https://madskristensen.net/blog/a-shorter-and-url-friendly-guid/) and [this blog post by Dave Transom](https://www.singular.co.nz/2007/12/shortguid-a-shorter-and-url-friendly-guid-in-c-sharp/).
 
+## Installation
+
+Download and install this package from NuGet using the Package Manager Console, .NET CLI or Visual Studio's NuGet Package Manager.
+
+```bash
+PM> Install-Package GuidBase64
+# OR
+$ dotnet add package GuidBase64
+```
+
 ## Usage
 
 ### Basic Usage
