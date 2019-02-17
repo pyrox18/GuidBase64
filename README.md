@@ -1,5 +1,7 @@
 # GuidBase64
 
+[![Build Status](https://travis-ci.com/pyrox18/GuidBase64.svg?branch=master)](https://travis-ci.com/pyrox18/GuidBase64) ![](https://img.shields.io/nuget/v/GuidBase64.svg?style=flat)
+
 A configurable wrapper for `System.Guid` that enables easy conversion of GUIDs to and from base 64 strings.
 
 The base 64 representation uses a URL- and filename-safe character set based on [RFC 4648 Section 5](https://tools.ietf.org/html/rfc4648#section-5) and strips padding by default (see the "Usage: Advanced Configuration" section to learn how to configure this behaviour).
