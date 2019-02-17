@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace GuidBase64
 {
     [TypeConverter(typeof(Base64GuidTypeConverter))]
-    public class Base64Guid : IEquatable<Base64Guid>
+    public struct Base64Guid : IEquatable<Base64Guid>
     {
         private readonly Base64GuidOptions _options;
 
@@ -16,13 +16,6 @@ namespace GuidBase64
         /// Gets the Guid object.
         /// </summary>
         public Guid Guid { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Base64Guid"/> class with an empty Guid
-        /// ("AAAAAAAAAAAAAAAAAAAAAA").
-        /// </summary>
-        public Base64Guid()
-            : this(new Guid(), options => { }) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Base64Guid"/> class with an empty GUID
@@ -98,7 +91,7 @@ namespace GuidBase64
             Guid = new Guid(ParseToByteArray(encoded, _options));
         }
 
-        private Base64GuidOptions BuildOptions(Action<Base64GuidOptionsBuilder> options)
+        private static Base64GuidOptions BuildOptions(Action<Base64GuidOptionsBuilder> options)
         {
             if (options is null)
             {

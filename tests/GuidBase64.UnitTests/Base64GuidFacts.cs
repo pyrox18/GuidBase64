@@ -6,6 +6,17 @@ namespace GuidBase64.UnitTests
 {
     public class Base64GuidFacts
     {
+        public class DefaultConstructor
+        {
+            [Fact]
+            public void ConstructsWithEmptyGuid()
+            {
+                var result = new Base64Guid();
+
+                Assert.Equal(Guid.Empty, result.Guid);
+            }
+        }
+
         public class ParseMethod
         {
             [Fact]
