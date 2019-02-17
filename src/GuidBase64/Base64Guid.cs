@@ -12,6 +12,8 @@ namespace GuidBase64
     {
         private readonly Base64GuidOptions _options;
 
+        public static readonly Base64Guid Empty = new Base64Guid(Guid.Empty);
+
         /// <summary>
         /// Gets the Guid object.
         /// </summary>
