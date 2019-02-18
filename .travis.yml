@@ -18,13 +18,9 @@ jobs:
       script: dotnet test tests/GuidBase64.IntegrationTests/GuidBase64.IntegrationTests.csproj
     - stage: deploy
       name: "Publish to NuGet"
-      script: skip
       deploy:
         provider: script
         script:
           - dotnet build src/GuidBase64/GuidBase64.csproj -c Release
           - dotnet pack src/GuidBase64/GuidBase64.csproj -c Release
           - dotnet nuget push src/GuidBase64/bin/Release/GuidBase64.*.nupkg --api-key $NUGET_API_KEY
-        on:
-          tags: true
-          condition: $TRAVIS_TAG =~ ^(\d+\.)?(\d+\.)?(\*|\d+)$
