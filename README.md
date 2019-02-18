@@ -1,10 +1,22 @@
 # GuidBase64
 
+[![Build Status](https://travis-ci.com/pyrox18/GuidBase64.svg?branch=master)](https://travis-ci.com/pyrox18/GuidBase64) [![](https://img.shields.io/nuget/v/GuidBase64.svg?style=flat)](https://www.nuget.org/packages/GuidBase64/)
+
 A configurable wrapper for `System.Guid` that enables easy conversion of GUIDs to and from base 64 strings.
 
 The base 64 representation uses a URL- and filename-safe character set based on [RFC 4648 Section 5](https://tools.ietf.org/html/rfc4648#section-5) and strips padding by default (see the "Usage: Advanced Configuration" section to learn how to configure this behaviour).
 
 This library borrows implementation concepts from [this blog post by Mads Kristensen](https://madskristensen.net/blog/a-shorter-and-url-friendly-guid/) and [this blog post by Dave Transom](https://www.singular.co.nz/2007/12/shortguid-a-shorter-and-url-friendly-guid-in-c-sharp/).
+
+## Installation
+
+Download and install this package from NuGet using the Package Manager Console, .NET CLI or Visual Studio's NuGet Package Manager.
+
+```bash
+PM> Install-Package GuidBase64
+# OR
+$ dotnet add package GuidBase64
+```
 
 ## Usage
 
@@ -128,6 +140,10 @@ Available options:
 
 - `UseStandardBase64Encoding()`: Configures the `Base64Guid` object to use the standard base 64 character set with the `+` and `/` characters instead of `-` and `_`, as specified in [RFC 4648 Section 4](https://tools.ietf.org/html/rfc4648#section-4). This format is not URL- and filename-safe.
 - `UsePadding()`: Configures the `Base64Guid` object to retain the padding characters present at the end of the base 64 string representation (which is always two `=` characters, i.e. `==`). This may cause issues if used with URLs.
+
+## Contributing
+
+Refer to the CONTRIBUTING.md file for more information on how to contribute to this project.
 
 ## License
 
