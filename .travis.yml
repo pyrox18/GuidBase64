@@ -19,6 +19,7 @@ jobs:
     - stage: deploy
       name: "Publish to NuGet"
       script:
-        - dotnet build src/GuidBase64/GuidBase64.csproj -c Release
-        - dotnet pack src/GuidBase64/GuidBase64.csproj -c Release
-        - dotnet nuget push src/GuidBase64/bin/Release/GuidBase64.*.nupkg --api-key $NUGET_API_KEY
+        - cd src/GuidBase64
+        - dotnet build GuidBase64.csproj -c Release
+        - dotnet pack GuidBase64.csproj -c Release
+        - dotnet nuget push bin/Release/GuidBase64.*.nupkg --api-key $NUGET_API_KEY
