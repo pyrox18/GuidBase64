@@ -8,6 +8,7 @@ namespace GuidBase64.PerformanceTests
         public static void Main(string[] args)
         {
             var summary = BenchmarkRunner.Run<Base64GuidToString>();
+            var summary2 = BenchmarkRunner.Run<Base64GuidNewFromString>();
         }
     }
 }
