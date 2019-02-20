@@ -41,12 +41,5 @@ Thumbs.db
 # dotCover
 *.dotCover
 
-# App settings
-UUMS/appsettings.*.json
-
-# Front-end dependencies
-**/node_modules
-UUMS/wwwroot/vendor
-
-#Uploaded files
-UUMS/files
+# BenchmarkDotNet artifacts
+**/BenchmarkDotNet.Artifacts/**/*
