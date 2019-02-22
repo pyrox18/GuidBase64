@@ -33,7 +33,7 @@ namespace GuidBase64
         /// </summary>
         /// <param name="buffer">A 16-element byte array containing values with which to initialize the GUID.</param>
         public Base64Guid(byte[] buffer)
-            : this(new Guid(buffer), options => { }) { }
+            : this(new Guid(buffer)) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Base64Guid"/> class by using the
@@ -50,7 +50,10 @@ namespace GuidBase64
         /// </summary>
         /// <param name="guid">The <see cref="System.Guid"/> instance to initialise the <see cref="Base64Guid"/> instance with.</param>
         public Base64Guid(Guid guid)
-            : this(guid, options => { }) { }
+        {
+            _options = default;
+            Guid = guid;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Base64Guid"/> class with an existing
@@ -72,7 +75,10 @@ namespace GuidBase64
         /// A string that contains a Guid which satisfies the regular expression "^[a-zA-Z0-9-_]{22}$".
         /// </param>
         public Base64Guid(string encoded)
-            : this(encoded, options => { }) { }
+        {
+            _options = default;
+            Guid = new Guid(ParseToByteArray(encoded, _options));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Base64Guid"/> class by using the value
